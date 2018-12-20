@@ -64,7 +64,26 @@ Object.freeze(MORSE_CODE);
  * @param {string} morseCode The string to decode.
  */
 function decodeMorse(morseCode) {
-  // Your code should go here.
+  //Checking if the input is not a string
+  if(typeof morseCode !== 'string') {
+    throw Error('The input should be a string');
+  }
+
+  //hecking if the input is an empty string
+  if(morseCode == '') {
+    return '';
+  }
+
+  let result = morseCode.split('   ')//splitin the morseCode into separate words
+  .map(word => word.split(' ')//splitin each word into individual characters by a space
+    .map(character => MORSE_CODE[character]).join('')//Geting the value of each character/letter key and joining them
+  ).join(' ');
+
+  return result.trim();
+
 }
+
+// console.log(decodeMorse('   .   '));
+
 
 module.exports = decodeMorse;
