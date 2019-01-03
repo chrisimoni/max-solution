@@ -1,4 +1,4 @@
-const input  = require('./inputs/input');
+//const input  = require('./inputs/input');
 //const singleArr = [{ name: 'Patrick', dob: new Date('2015-10-15'), regNo: '19', } ];
 
 /**
@@ -29,12 +29,17 @@ function classifier(input) {
     return output;
   }
 
-  //Current year
-  const currentYear = new Date().getFullYear();
+  //If the input is empty
+  if(input.length == 0) {
+    return  {
+      noOfGroups: 0
+    }
+  }
+
 
   //Generating new student array and adding age property
   const students = clone(input).map((item) => {
-    item.age = currentYear - new Date(item.dob).getFullYear()
+    item.age = getAge(item.dob);
     return item
   });
 
@@ -57,7 +62,9 @@ function classifier(input) {
     }
   }
 
-  //console.log(groups.length)
+  //For some reasons i couldnt get last group of students added to the the groups array
+  //Did some workaround to add the last group (which contains the last group of students) into the groups array
+  groups.push(group);
 
   let output = {
     noOfGroups: groups.length
@@ -99,8 +106,23 @@ function classifier(input) {
   
 }
 
+//Function to clone an array
 function clone (src) {
   return JSON.parse(JSON.stringify(src));
+}
+
+//Function to calculate age
+function getAge(dateString) {
+  let today = new Date();
+  let birthDate = new Date(dateString);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  let m = today.getMonth() - birthDate.getMonth();
+
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+  }
+
+  return age;
 }
 
 //console.log(classifier(input));
