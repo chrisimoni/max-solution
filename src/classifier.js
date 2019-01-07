@@ -64,43 +64,40 @@ function classifier(input) {
 
   //For some reasons i couldnt get last group of students added to the the groups array
   //Did some workaround to add the last group (which contains the last group of students) into the groups array
-  groups.push(group);
+  groups.push(group); 
 
   let output = {
     noOfGroups: groups.length
-  }
+  };
 
-  let currentGroup = 1
-
-  //Looping through each groups
-  for (let group of groups) {
+  //Iterating through each groups array
+  groups.map((group, index) => {
     let members = [],
-    sum = 0,
-    regNos = [];
-    for (let member of group) {
-      //Adding each member to members array
-      members.push({
-          name: member.name,
-          dob: member.dob,
-          regNo: member.regNo,
-          age: member.age
-      });
-      sum += member.age; 
-      regNos.push(Number(member.regNo));
-    }
+        sum = 0,
+        regNos = [];
+    //Iterating through each group array
+    group.map(student => {
+        members.push({
+            name: student.name,
+            dob: student.dob,
+            regNo: student.regNo,
+            age: student.age
+        });
+        sum += student.age; 
+        regNos.push(Number(student.regNo));
+    });
 
     //Sorting regNos in ascending order
     regNos.sort((a, b) => a - b);
 
-    //Adding each group and its data to the output object
-    output['group' + currentGroup] = {
-      members,
-      oldest: group[group.length - 1].age,
-      sum,
-      regNos
+    return output[`group${index + 1}`] = {
+        members,
+        oldest: group[group.length - 1].age,
+        sum,
+        regNos
     }
-    currentGroup += 1
-  } 
+
+  });
   
   return output;
   
